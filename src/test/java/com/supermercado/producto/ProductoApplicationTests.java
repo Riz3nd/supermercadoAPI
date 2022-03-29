@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ProductoApplicationTests {
 
 	@Test
-	void contextLoads() {
+	public void testProduct() {
+
 	}
 
 }
