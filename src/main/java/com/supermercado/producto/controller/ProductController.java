@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import utils.Message;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ public class ProductController {
 
     @Autowired
     private ProductRepository productRepository;
+    private Message message = new Message();
 
     @RequestMapping(value = "api/product/{id}", method = RequestMethod.GET)
     public ResponseEntity<Product> getProduct(@PathVariable Integer id){
@@ -37,6 +39,35 @@ public class ProductController {
     @RequestMapping(value = "api/products", method = RequestMethod.GET)
     public List<Product> listProducts(){
         return productRepository.findAll();
+    }
+
+    @RequestMapping(value = "api/product/{id}", method = RequestMethod.PUT)
+    public ResponseEntity editProduct(@RequestBody Product newProduct,@PathVariable int id){
+        Map<String, String> response = new LinkedHashMap<>();
+        try{
+            Product product = productRepository.findById(id).get();
+            product.setName(newProduct.getName());
+            product.setDescription(newProduct.getDescription());
+            product.setCategory(newProduct.getCategory());
+            product.setPrice(newProduct.getPrice());
+            productRepository.save(product);
+            return message.viewMessage(HttpStatus.OK,"success","Product edit success!!");
+        }catch (Exception e){
+            return message.viewMessage(HttpStatus.NOT_FOUND,"error","Product not found!");
+        }
+    }
+
+    @RequestMapping(value = "api/product/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteProduct(@PathVariable int id){
+        Map<String, String> response = new LinkedHashMap<>();
+        try{
+            Product product = productRepository.findById(id).get();
+            productRepository.delete(product);
+            return message.viewMessage(HttpStatus.OK,"success","Product delete success!!");
+        }catch (Exception e){
+
+            return message.viewMessage(HttpStatus.NOT_FOUND,"error","Product delete fail!!");
+        }
     }
 
 
