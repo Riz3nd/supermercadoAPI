@@ -8,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.Message;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,14 +19,10 @@ public class ProductController {
     private Message message = new Message();
 
     @RequestMapping(value = "api/product/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Product> getProduct(@PathVariable Integer id){
+    public ResponseEntity getProduct(@PathVariable Integer id){
         Optional<Product> findProduct = productRepository.findById(id);
         if(findProduct.isPresent()) return  ResponseEntity.ok(findProduct.get());
-        Map<String,String> errorResponse = new LinkedHashMap<>();
-        errorResponse.put("error","Not Found");
-        errorResponse.put("message","User not found");
-        errorResponse.put("status", HttpStatus.NOT_FOUND.toString());
-        return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
+            return message.viewMessage(HttpStatus.NOT_FOUND,"error","Product not found!");
     }
 
     @RequestMapping(value = "api/product", method = RequestMethod.POST)
@@ -43,10 +37,9 @@ public class ProductController {
 
     @RequestMapping(value = "api/product/{id}", method = RequestMethod.PUT)
     public ResponseEntity editProduct(@RequestBody Product newProduct,@PathVariable int id){
-        Map<String, String> response = new LinkedHashMap<>();
         try{
             Product product = productRepository.findById(id).get();
-            product.setName(newProduct.getName());
+            product.setProductName(newProduct.getProductName());
             product.setDescription(newProduct.getDescription());
             product.setCategory(newProduct.getCategory());
             product.setPrice(newProduct.getPrice());
@@ -59,7 +52,6 @@ public class ProductController {
 
     @RequestMapping(value = "api/product/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteProduct(@PathVariable int id){
-        Map<String, String> response = new LinkedHashMap<>();
         try{
             Product product = productRepository.findById(id).get();
             productRepository.delete(product);

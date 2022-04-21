@@ -12,8 +12,8 @@ public class Product {
     @Id
     private int id;
 
-    @Column(nullable = false,unique = true,length = 30)
-    private String name;
+    @Column(name = "product_name", nullable = false,unique = true,length = 30)
+    private String productName;
 
     @Column(nullable = false,length = 300)
     private String description;
