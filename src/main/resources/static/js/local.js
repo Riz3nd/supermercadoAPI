@@ -86,21 +86,13 @@ async function modifiDataProduct(path){
     console.log(await request.text())
 }
 
-function listProducts(path){
-    var myForm2 = document.getElementById("myForm2")
-    var formData = new FormData(myForm2);
-    var jsonData = {};
-//    //conversion de datos a json
-    for(var[k,v] of formData){
-        jsonData[k] = v;
-    }
-    const request = fetch(path, {
+async function listProducts(path){
+    const request = await fetch(path, {
         method: "GET",
         headers: {
             'Accept': 'application/json',
             'content-type' : 'application/json'
         },
-        body: JSON.stringify(jsonData)
     });
-    console.log(request.text())
+    console.log(await request.text())
 }
