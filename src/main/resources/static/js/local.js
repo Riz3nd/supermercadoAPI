@@ -1,103 +1,4 @@
-/* async function sendData(path){
-    var myForm = document.getElementById("myForm")
-    var formData = new FormData(myForm);
-    var jsonData = {};
-    //conversion de datos a json
-    for(var[k,v] of formData){
-        jsonData[k] = v;
-    }
-    const request = await fetch(path, {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'content-type' : 'application/json'
-        },
-        body: JSON.stringify(jsonData)
-    });
-    console.log(await request.text())
-}
-
-async function getDataProduct(path){
-    var id = document.getElementById("id").value;
-    console.log(id)
-    var myForm = document.getElementById("myForm")
-    var formData = new FormData(myForm);
-    var jsonData = {};
-    //conversion de datos a json
-    for(var[k,v] of formData){
-        jsonData[k] = v;
-    }
-    path += "/"+id
-    console.log(path)
-    const request = await fetch(path, {
-        method: "GET",
-        headers: {
-            'Accept': 'application/json',
-            'content-type' : 'application/json'
-        },
-    });
-
-    console.log(await request.text())
-}
-
-async function deleteProduct(path){
-    var id = document.getElementById("id").value;
-    console.log(id)
-    var myForm = document.getElementById("myForm")
-    var formData = new FormData(myForm);
-    var jsonData = {};
-    //conversion de datos a json
-    for(var[k,v] of formData){
-        jsonData[k] = v;
-    }
-    path += "/"+id
-    console.log(path)
-    const request = await fetch(path, {
-        method: "DELETE",
-        headers: {
-            'Accept': 'application/json',
-            'content-type' : 'application/json'
-        },
-    });
-
-    console.log(await request.text())
-}
-
-async function modifiDataProduct(path){
-    var id = document.getElementById("id").value;
-    console.log(id)
-    var myForm = document.getElementById("myForm")
-    var formData = new FormData(myForm);
-    var jsonData = {};
-    //conversion de datos a json
-    for(var[k,v] of formData){
-        jsonData[k] = v;
-    }
-    path += "/"+id
-    console.log(path)
-    const request = await fetch(path, {
-        method: "PUT",
-        headers: {
-            'Accept': 'application/json',
-            'content-type' : 'application/json'
-        },
-        body: JSON.stringify(jsonData)
-    });
-    console.log(await request.text())
-}
-
-async function listProducts(path){
-    const request = await fetch(path, {
-        method: "GET",
-        headers: {
-            'Accept': 'application/json',
-            'content-type' : 'application/json'
-        },
-    });
-    console.log(await request.text())
-} */
-
-function listar(){
+async function listar(){
     var settings={
         method: 'GET',
         headers:{
@@ -105,34 +6,29 @@ function listar(){
             'Content-Type': 'application/json'
         },
     }
-    fetch("api/products")
+    await fetch("api/products")
     .then(response => response.json())
     .then(function(data){
-
-        //if(data.lenght>0){
-            var productos = '';
-            for(const producto of data){            
-                productos += '<tr>'+
-                '<th scope="row">'+producto.id+'</th>'+
-                '<td>'+producto.productName+'</td>'+
-                '<td>'+producto.description+'</td>'+
-                '<td>'+producto.category+'</td>'+
-                '<td>'+producto.price+'</td>'+
-                '<td>'+
-                  '<button type="button" class="btn btn-outline-danger" onclick="eliminarProducto(\''+producto.id+'\')"><i class="fa-solid fa-user-minus"></i></button>'+
-                  '<a href="#" onclick="verModificarProducto(\''+producto.id+'\')" class="btn btn-outline-warning"><i class="fa-solid fa-user-pen"></i></a>'+
-                  '<a href="#" onclick="verProducto(\''+producto.id+'\')" class="btn btn-outline-info"><i class="fa-solid fa-eye"></i></a>'+
-                '</td>'+
-              '</tr>';
-            }
-            document.getElementById("listar").innerHTML = productos;
-        //}
+        var productos = '';
+        for(const producto of data){
+            productos += '<tr>'+
+            '<th scope="row">'+producto.id+'</th>'+
+            '<td>'+producto.productName+'</td>'+
+            '<td>'+producto.description+'</td>'+
+            '<td>'+producto.category+'</td>'+
+            '<td>'+producto.price+'</td>'+
+            '<td>'+
+              '<button type="button" class="btn btn-outline-danger" onclick="eliminarProducto(\''+producto.id+'\')"><i class="fa-solid fa-user-minus"></i></button>'+
+              '<a href="#" onclick="verModificarProducto(\''+producto.id+'\')" class="btn btn-outline-warning"><i class="fa-solid fa-user-pen"></i></a>'+
+              '<a href="#" onclick="verProducto(\''+producto.id+'\')" class="btn btn-outline-info"><i class="fa-solid fa-eye"></i></a>'+
+            '</td>'+
+          '</tr>';
+        }
+        document.getElementById("listar").innerHTML = productos;
     })
 }
 
-
-
-function eliminarProducto(id){
+async function eliminarProducto(id){
     var settings={
         method: 'DELETE',
         headers:{
@@ -140,7 +36,7 @@ function eliminarProducto(id){
             'Content-Type': 'application/json'
         },
     }
-    fetch("api/product/"+id,settings)
+    await fetch("api/product/"+id,settings)
     .then(response => response.json())
     .then(function(data){
         listar();
@@ -148,7 +44,7 @@ function eliminarProducto(id){
     })
 }
 
-function verModificarProducto(id){
+async function verModificarProducto(id){
     var settings={
         method: 'GET',
         headers:{
@@ -156,7 +52,7 @@ function verModificarProducto(id){
             'Content-Type': 'application/json'
         },
     }
-    fetch("api/product/"+id,settings)
+    await fetch("api/product/"+id,settings)
     .then(response => response.json())
     .then(function(producto){
             var cadena='';
@@ -202,18 +98,15 @@ async function modificarProducto(id){
     listar();
     alertas("Se ha modificado el producto exitosamente!.", 1)
     document.getElementById("contentModal").innerHTML = '';
-    //var myModal = new bootstrap.Modal(document.getElementById('modalUsuario'))
     var myModalInstance = document.getElementById('modalProducto')
     var modal = bootstrap.Modal.getInstance(myModalInstance)
     modal.hide();
-    //console.log(request.text())
 }
 
-function registerForm(){
+async function registerForm(){
     cadena = '<div class="p-3 mb-2 bg-light text-dark">'+
                 '<h1 class="display-5"><i class="fa-solid fa-user-pen"></i>Registrar Producto</h1>'+
                 '</div>'+
-
               '<form action="" method="post" id="myForm">'+
                 '<input type="hidden" name="id" id="id">'+
                 '<label for="productName" class="form-label">Product Name</label>'+
@@ -249,14 +142,12 @@ async function añadirProducto(){
     listar();
     alertas("Se ha registrado el producto exitosamente!.", 1)
     document.getElementById("contentModal").innerHTML = '';
-    //var myModal = new bootstrap.Modal(document.getElementById('modalUsuario'))
     var myModalInstance = document.getElementById('modalProducto')
     var modal = bootstrap.Modal.getInstance(myModalInstance)
     modal.hide();
-    //console.log(request.text())
 }
 
-function verProducto(id){
+async function verProducto(id){
     var settings={
         method: 'GET',
         headers:{
@@ -264,7 +155,7 @@ function verProducto(id){
             'Content-Type': 'application/json'
         },
     }
-    fetch("api/product/"+id,settings)
+    await fetch("api/product/"+id,settings)
     .then(response => response.json())
     .then(function(producto){
             var cadena='';
@@ -285,7 +176,7 @@ function verProducto(id){
     })
 }
 
-function alertas(mensaje, tipo){
+async function alertas(mensaje, tipo){
     var color = "alert alert-"
     if(tipo == 1){ //success
         color = "success"
