@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.Message;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -49,6 +51,22 @@ public class ProductController {
             return message.viewMessage(HttpStatus.NOT_FOUND,"error","Product not found!");
         }
     }
+
+//    @RequestMapping(value = "api/users/{id}", method = RequestMethod.PUT)
+//    public ResponseEntity editUser(@RequestBody User newUser,@PathVariable Long id){
+//        Map<String, String> response = new LinkedHashMap<>();
+//        try{
+//            User user = userRepository.findById(id).get();
+//            user.setFirstName(newUser.getFirstName());
+//            user.setLastName(newUser.getLastName());
+//            user.setEmail(newUser.getEmail());
+//            user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+//            userRepository.save(user);
+//            return message.viewMessage(HttpStatus.OK,"success","user edit success!!");
+//        }catch (Exception e){
+//            return message.viewMessage(HttpStatus.NOT_FOUND,"error","User not found!");
+//        }
+//    }
 
     @RequestMapping(value = "api/product/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteProduct(@PathVariable int id){
