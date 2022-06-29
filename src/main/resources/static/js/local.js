@@ -1,4 +1,43 @@
+async function login(){
+    var myForm = document.getElementById("myForm");
+    var formData = new FormData(myForm);
+    var jsonData = {};
+    for(var [k, v] of formData){//convertimos los datos a json
+        jsonData[k] = v;
+    }
+    var settings={
+        method: 'POST',
+        headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    }
+    const request = await fetch("api/auth/login",settings);
+    //console.log(await request.text());
+    if(request.ok){
+        const respuesta = await request.json();
+        localStorage.token = respuesta.detail;
+
+        //localStorage.token = respuesta;
+        localStorage.email = jsonData.email;
+        location.href= "dashboard.html";
+    }
+}
+
+function salir(){
+    localStorage.clear();
+    location.href = "index.html";
+}
+
+function validaToken(){
+    if(localStorage.token == undefined){
+        salir();
+    }
+}
+
 async function listar(){
+    validaToken()
     var settings={
         method: 'GET',
         headers:{
@@ -29,6 +68,7 @@ async function listar(){
 }
 
 async function eliminarProducto(id){
+    validaToken()
     var settings={
         method: 'DELETE',
         headers:{
@@ -45,6 +85,7 @@ async function eliminarProducto(id){
 }
 
 async function verModificarProducto(id){
+    validaToken()
     var settings={
         method: 'GET',
         headers:{
@@ -81,6 +122,7 @@ async function verModificarProducto(id){
 }
 
 async function modificarProducto(id){
+    validaToken()
     var myForm = document.getElementById("myForm");
     var formData = new FormData(myForm);
     var jsonData = {};
@@ -148,6 +190,7 @@ async function añadirProducto(){
 }
 
 async function verProducto(id){
+    validaToken()
     var settings={
         method: 'GET',
         headers:{

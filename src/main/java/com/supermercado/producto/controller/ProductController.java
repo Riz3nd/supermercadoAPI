@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import utils.Message;
+import com.supermercado.producto.util.JWTUtil;
+import com.supermercado.producto.util.Message;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -19,6 +18,13 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
     private Message message = new Message();
+    @Autowired
+    private JWTUtil jwtUtil;
+
+    private boolean validarToken(String token){
+        String id = jwtUtil.getKey(token);
+        return id != null;
+    }
 
     @RequestMapping(value = "api/product/{id}", method = RequestMethod.GET)
     public ResponseEntity getProduct(@PathVariable Integer id){
