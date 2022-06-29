@@ -27,7 +27,9 @@ public class ProductController {
     }
 
     @RequestMapping(value = "api/product/{id}", method = RequestMethod.GET)
-    public ResponseEntity getProduct(@PathVariable Integer id){
+    public ResponseEntity getProduct(@PathVariable Integer id, @RequestHeader(value = "Authorization") String token){
+        if(validarToken(token) == false){ return null;}
+
         Optional<Product> findProduct = productRepository.findById(id);
         if(findProduct.isPresent()) return  ResponseEntity.ok(findProduct.get());
             return message.viewMessage(HttpStatus.NOT_FOUND,"error","Product not found!");
@@ -39,12 +41,15 @@ public class ProductController {
     }
 
     @RequestMapping(value = "api/products", method = RequestMethod.GET)
-    public List<Product> listProducts(){
+    public List<Product> listProducts(@RequestHeader(value = "Authorization") String token){
+        if(validarToken(token) == false){ return null;}
         return productRepository.findAll();
     }
 
     @RequestMapping(value = "api/product/{id}", method = RequestMethod.PUT)
-    public ResponseEntity editProduct(@RequestBody Product newProduct,@PathVariable int id){
+    public ResponseEntity editProduct(@RequestBody Product newProduct,@PathVariable int id,
+                                      @RequestHeader(value = "Authorization") String token){
+        if(validarToken(token) == false){ return null;}
         try{
             Product product = productRepository.findById(id).get();
             product.setProductName(newProduct.getProductName());
@@ -58,24 +63,9 @@ public class ProductController {
         }
     }
 
-//    @RequestMapping(value = "api/users/{id}", method = RequestMethod.PUT)
-//    public ResponseEntity editUser(@RequestBody User newUser,@PathVariable Long id){
-//        Map<String, String> response = new LinkedHashMap<>();
-//        try{
-//            User user = userRepository.findById(id).get();
-//            user.setFirstName(newUser.getFirstName());
-//            user.setLastName(newUser.getLastName());
-//            user.setEmail(newUser.getEmail());
-//            user.setPassword(passwordEncoder.encode(newUser.getPassword()));
-//            userRepository.save(user);
-//            return message.viewMessage(HttpStatus.OK,"success","user edit success!!");
-//        }catch (Exception e){
-//            return message.viewMessage(HttpStatus.NOT_FOUND,"error","User not found!");
-//        }
-//    }
-
     @RequestMapping(value = "api/product/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteProduct(@PathVariable int id){
+    public ResponseEntity deleteProduct(@PathVariable int id, @RequestHeader(value = "Authorization") String token){
+        if(validarToken(token) == false){ return null;}
         try{
             Product product = productRepository.findById(id).get();
             productRepository.delete(product);
@@ -85,7 +75,5 @@ public class ProductController {
             return message.viewMessage(HttpStatus.NOT_FOUND,"error","Product delete fail!!");
         }
     }
-
-
 
 }

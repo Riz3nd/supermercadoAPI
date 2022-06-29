@@ -42,10 +42,11 @@ async function listar(){
         method: 'GET',
         headers:{
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.token
         },
     }
-    await fetch("api/products")
+    await fetch("api/products", settings)
     .then(response => response.json())
     .then(function(data){
         var productos = '';
@@ -73,10 +74,11 @@ async function eliminarProducto(id){
         method: 'DELETE',
         headers:{
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.token
         },
     }
-    await fetch("api/product/"+id,settings)
+    await fetch("api/product/"+id, settings)
     .then(response => response.json())
     .then(function(data){
         listar();
@@ -90,10 +92,11 @@ async function verModificarProducto(id){
         method: 'GET',
         headers:{
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.token
         },
     }
-    await fetch("api/product/"+id,settings)
+    await fetch("api/product/"+id, settings)
     .then(response => response.json())
     .then(function(producto){
             var cadena='';
@@ -133,7 +136,8 @@ async function modificarProducto(id){
         method: 'PUT',
         headers:{
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.token
         },
         body: JSON.stringify(jsonData)
     });
@@ -195,10 +199,11 @@ async function verProducto(id){
         method: 'GET',
         headers:{
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.token
         },
     }
-    await fetch("api/product/"+id,settings)
+    await fetch("api/product/"+id, settings)
     .then(response => response.json())
     .then(function(producto){
             var cadena='';
