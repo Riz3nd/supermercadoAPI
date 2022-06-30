@@ -39,6 +39,17 @@ public class UserController {
         return null;
     }
 
+/*    @RequestMapping(value = "api/users/{email}", method = RequestMethod.GET)
+    public Optional<User> getUserName(@PathVariable String email, @RequestHeader(value = "Authorization") String token){
+        if(validarToken(token) == false){ return null;}
+
+        Optional<User> foundUser = userRepository.findById(email);
+        if(foundUser.isPresent()){
+            return foundUser;
+        }
+        return null;
+    }*/
+
     @RequestMapping(value = "api/users", method = RequestMethod.POST)
     public ResponseEntity createUser(@RequestBody User user){
         Map<String,String> response = new LinkedHashMap<>();

@@ -57,9 +57,10 @@ async function listar(){
             '<td>'+producto.description+'</td>'+
             '<td>'+producto.category+'</td>'+
             '<td>'+producto.price+'</td>'+
+            '<td>'+producto.productOwner+'</td>'+
             '<td>'+
-              '<button type="button" class="btn btn-outline-danger" onclick="eliminarProducto(\''+producto.id+'\')"><i class="fa-solid fa-user-minus"></i></button>'+
-              '<a href="#" onclick="verModificarProducto(\''+producto.id+'\')" class="btn btn-outline-warning"><i class="fa-solid fa-user-pen"></i></a>'+
+              '<button type="button" class="btn btn-outline-danger" onclick="eliminarProducto(\''+producto.id+'\')"><i class="fa-solid fa-minus"></i></button>'+
+              '<a href="#" onclick="verModificarProducto(\''+producto.id+'\')" class="btn btn-outline-warning"><i class="fa-solid fa-edit"></i></a>'+
               '<a href="#" onclick="verProducto(\''+producto.id+'\')" class="btn btn-outline-info"><i class="fa-solid fa-eye"></i></a>'+
             '</td>'+
           '</tr>';
@@ -102,7 +103,7 @@ async function verModificarProducto(id){
             var cadena='';
             if(producto){
                 cadena = '<div class="p-3 mb-2 bg-light text-dark">'+
-                '<h1 class="display-5"><i class="fa-solid fa-user-pen"></i> Modificar Usuario</h1>'+
+                '<h1 class="display-5"><i class="fa-solid fa-toolbox"></i>Modificar Producto</h1>'+
                 '</div>'+
 
               '<form action="" method="post" id="myForm">'+
@@ -149,9 +150,9 @@ async function modificarProducto(id){
     modal.hide();
 }
 
-async function registerForm(){
+async function registerProductForm(){
     cadena = '<div class="p-3 mb-2 bg-light text-dark">'+
-                '<h1 class="display-5"><i class="fa-solid fa-user-pen"></i>Registrar Producto</h1>'+
+                '<h1 class="display-5"><i class="fa-solid fa-people-carry-box"></i>Registrar Producto</h1>'+
                 '</div>'+
               '<form action="" method="post" id="myForm">'+
                 '<input type="hidden" name="id" id="id">'+
@@ -163,6 +164,8 @@ async function registerForm(){
                 '<input type="text" class="form-control" name="category" id="category" > <br>'+
                 '<label for="price"  class="form-label">Price</label>'+
                 '<input type="number" class="form-control" name="price" id="price" > <br>'+
+                '<label for="productOwner"  class="form-label">Owner</label>'+
+                '<input type="text" class="form-control" name="productOwner" id="productOwner" value="'+localStorage.email+'" readonly> <br>'+
                 '<button type="button" class="btn btn-outline-info" onclick="añadirProducto()">Añadir</button>'+
             '</form>';
             document.getElementById("contentModal").innerHTML = cadena;
@@ -209,19 +212,41 @@ async function verProducto(id){
             var cadena='';
             if(producto){
                 cadena = '<div class="p-3 mb-2 bg-light text-dark">'+
-                '<h1 class="display-5"><i class="fa-solid fa-user-pen"></i>Visualizar Producto</h1>'+
+                '<h1 class="display-5"><i class="fa-solid fa-box"></i>Visualizar Producto</h1>'+
                 '</div>'+
                 '<ul class="list-group">'+
                 '<li class="list-group-item">Nombre: '+producto.productName+'</li>'+
                 '<li class="list-group-item">Descripcion: '+producto.description+'</li>'+
                 '<li class="list-group-item">Categoria: '+producto.category+'</li>'+
                 '<li class="list-group-item">Precio: '+producto.price+'</li>'+
+                '<li class="list-group-item">Creador: '+producto.productOwner+'</li>'+
             '</ul>';
             }
             document.getElementById("contentModal").innerHTML = cadena;
             var myModal = new bootstrap.Modal(document.getElementById('modalProducto'))
             myModal.toggle();
     })
+}
+
+async function sendData(path){
+    validaToken();
+    var myForm = document.getElementById("myForm");
+    var formData = new FormData(myForm);
+    var jsonData = {};
+    for(var [k, v] of formData){//convertimos los datos a json
+        jsonData[k] = v;
+    }
+    const request = await fetch(path, {
+        method: 'POST',
+        headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.token
+        },
+        body: JSON.stringify(jsonData)
+    });
+    myForm.reset();
+    console.log(await request.text())
 }
 
 async function alertas(mensaje, tipo){

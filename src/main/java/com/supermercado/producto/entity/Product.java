@@ -23,4 +23,8 @@ public class Product {
 
     @Column(nullable = false)
     private Double price;
+
+    @Column(name = "product_owner", nullable = false,unique = true,length = 30)
+    private String productOwner;
+
 }

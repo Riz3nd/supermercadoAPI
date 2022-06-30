@@ -21,6 +21,9 @@
                     <a class="nav-link" href="#" onclick="listar()">Productos</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="userdashboard.html">Usuarios</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#" onclick="salir()">Logout</a>
                 </li>
             </ul>
@@ -30,17 +33,17 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
-            <h1>Bienvenido al modulo de gestion de productos </h1>
+            <h1>Bienvenido al modulo de gestion de productos</h1>
         </div>
         <div class="card-body">
 
             <div id="datos"></div>
 
             <div class="p-3 mb-2 bg-light text-dark">
-                <h1 class="display-5"><i class="fa-solid fa-list"></i> Listado de productos</h1>
+                <h1 class="display-5"><i class="fa-solid fa-boxes-stacked"></i> Listado de productos</h1>
             </div>
 
-             <a href="#" onclick="registerForm()" class="btn btn-outline-success"><i class="fa-solid fa-user-plus"></i></a>
+             <a href="#" onclick="registerProductForm()" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i></a>
             <table class="table">
                 <thead>
                 <tr>
@@ -49,6 +52,8 @@
                     <th scope="col">Descripcion</th>
                     <th scope="col">Categoria</th>
                     <th scope="col">Precio</th>
+                    <th scope="col">Creador</th>
+                    <th scope="col">Operación</th>
                 </tr>
                 </thead>
                 <tbody id="listar">
@@ -58,7 +63,8 @@
     </div>
 </div>
 
-<script src="js/local.js"></script>
+<script src="js/localProduct.js"></script>
+<script src="js/localUser.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script>listar();</script>
 
